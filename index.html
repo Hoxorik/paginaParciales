@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudio Enfocado</title>
+    <meta name="description" content="Plataforma de estudio limpia y libre de distracciones">
+    <!-- Google Fonts: Spectral (Titulos) e Inter (Cuerpo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Spectral:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="app-container">
+        <!-- View 1: Login / Landing Page -->
+        <section id="login-view" class="view active">
+            <div class="center-wrapper">
+                <header class="view-header">
+                    <h2>Bienvenido</h2>
+                    <p class="subtitle">Ingresa tu nombre para comenzar tu sesión de estudio.</p>
+                </header>
+                <form id="login-form" class="clean-form">
+                    <div class="input-group">
+                        <label for="username">Nombre</label>
+                        <input type="text" id="username" autocomplete="off" required placeholder="Ej. Juan">
+                    </div>
+                    <div class="input-group" style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="genz-mode"
+                            style="width: auto; margin-top: 0; outline: none; box-shadow: none;">
+                        <label for="genz-mode" style="margin-bottom: 0;">Activar modo Gen Z</label>
+                    </div>
+                    <button type="submit" class="btn-primary">Ingresar</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- View 2: Dashboard / Drop Zone -->
+        <section id="home-view" class="view hidden">
+            <header class="view-header top-header">
+                <h1 id="user-greeting">Panel de Estudio</h1>
+                <p class="subtitle">Sube el PDF de tu parcial para generar el formato interactivo.</p>
+            </header>
+
+            <div id="drop-zone" class="drop-zone">
+                <div class="drop-content">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        style="margin-bottom: 12px; color: var(--text-tertiary);">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <h3>Arrastra tu archivo PDF aquí</h3>
+                    <p>O haz clic para seleccionar</p>
+                    <input type="file" id="file-input" accept="application/pdf" hidden>
+                </div>
+            </div>
+
+            <div id="loading-zone" class="hidden">
+                <p class="loading-text">Procesando documento...</p>
+            </div>
+
+            <div id="exam-list" class="exam-grid hidden">
+                <!-- Exam cards will be inserted here dynamically -->
+            </div>
+        </section>
+
+        <!-- View 3: Quiz View -->
+        <section id="quiz-view" class="view hidden">
+            <header class="quiz-header">
+                <button id="btn-back-home" class="btn-text">← Volver</button>
+                <h2 id="quiz-title">Cuestionario</h2>
+            </header>
+
+            <form id="quiz-form">
+                <div id="questions-container" class="questions-list">
+                    <!-- Questions will be inserted here dynamically -->
+                </div>
+
+                <div class="quiz-actions bottom-actions">
+                    <button type="submit" id="btn-submit" class="btn-primary">Finalizar cuestionario</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- View 4: Results -->
+        <section id="results-view" class="view hidden">
+            <div class="results-wrapper">
+                <h2 class="serif-title">Resultado de la Evaluación</h2>
+
+                <div class="score-container">
+                    <span id="final-score" class="score-number">0</span>
+                    <span class="score-total">/ 10</span>
+                </div>
+                <p id="score-message" class="score-feedback">Evaluación completada.</p>
+
+                <div class="action-buttons">
+                    <button id="btn-review" class="btn-secondary">Revisar correcciones</button>
+                    <button id="btn-home-from-results" class="btn-text">Volver al inicio</button>
+                    <button id="btn-toggle-bot" class="btn-primary"
+                        style="margin-top: 1rem; background-color: var(--text-primary);">💬 Hablar con
+                        Vivi</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Vivi Sidebar -->
+    <aside id="bot-panel" class="bot-panel hidden">
+        <div class="bot-header">
+            <h3>Vivi</h3>
+            <button id="close-bot" class="btn-text close-btn">×</button>
+        </div>
+        <div id="bot-messages" class="bot-messages">
+            <div class="message bot-message">
+                ¡Hola! Soy Vivi. ¿Qué parte del parcial te está costando?
+            </div>
+        </div>
+        <div class="vivi-fixed-container">
+            <img src="botConsultor.png" alt="Vivi" class="vivi-img">
+        </div>
+        <form id="bot-form" class="bot-input-area">
+            <input type="text" id="bot-input" placeholder="Escribe tu mensaje..." autocomplete="off">
+            <button type="submit" id="send-bot" class="btn-primary send-btn">➤</button>
+        </form>
+    </aside>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
