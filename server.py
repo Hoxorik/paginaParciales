@@ -1,10 +1,18 @@
 import fitz
 import json
 import re
+import sys
+import webbrowser
+from threading import Timer
 from flask import Flask, request, jsonify, send_from_directory
 import os
 
-app = Flask(__name__, static_folder='.', static_url_path='')
+if getattr(sys, 'frozen', False):
+    base_dir = sys._MEIPASS
+else:
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+app = Flask(__name__, static_folder=base_dir, static_url_path='')
 
 def is_yellow(fill):
     if not fill: return False
@@ -140,7 +148,7 @@ def process_pdf(pdf_bytes):
 
 @app.route('/')
 def home():
-    return send_from_directory('.', 'index.html')
+    return send_from_directory(base_dir, 'index.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -157,5 +165,9 @@ def upload_file():
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
+def open_browser():
+    webbrowser.open_new("http://127.0.0.1:8080")
+
 if __name__ == '__main__':
+    Timer(1.5, open_browser).start()
     app.run(port=8080, debug=False)
