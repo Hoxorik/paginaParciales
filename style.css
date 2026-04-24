@@ -26,6 +26,27 @@
     --radius-md: 12px;
 }
 
+body.dark-mode {
+    --bg-primary: #121212;
+    --bg-secondary: #1E1E1E;
+    --bg-tertiary: #2D2D2D;
+    
+    --text-primary: #F0EEE9;
+    --text-secondary: #A0A0A0;
+    --text-tertiary: #707070;
+    
+    --border-light: #333333;
+    --border-medium: #4D4D4D;
+    
+    --success-bg: #064E3B;
+    --success-border: #059669;
+    --success-text: #A7F3D0;
+    
+    --error-bg: #7F1D1D;
+    --error-border: #DC2626;
+    --error-text: #FECACA;
+}
+
 * {
     margin: 0;
     padding: 0;

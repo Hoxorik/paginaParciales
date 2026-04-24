@@ -1,4 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                themeToggle.innerHTML = '☀️ Modo Día';
+            } else {
+                themeToggle.innerHTML = '🌙 Modo Noche';
+            }
+        });
+    }
+
     // Views
     const loginView = document.getElementById('login-view');
     const homeView = document.getElementById('home-view');
