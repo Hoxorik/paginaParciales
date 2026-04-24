@@ -349,10 +349,22 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateBotResponse(query) {
         const lowerQuery = query.toLowerCase();
         
-        // Match specific question queries e.g. "pregunta 2"
-        const numMatch = lowerQuery.match(/(pregunta|ejercicio)\s*(\d+)/);
+        const numberMap = {
+            "uno": 1, "dos": 2, "tres": 3, "cuatro": 4, "cinco": 5,
+            "seis": 6, "siete": 7, "ocho": 8, "nueve": 9, "diez": 10
+        };
+
+        // Match specific question queries e.g. "pregunta 2" or "pregunta tres"
+        const numMatch = lowerQuery.match(/(pregunta|ejercicio)\s*(\d+|uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)/);
         if (numMatch && currentExam && currentExam.questions) {
-            const qIndex = parseInt(numMatch[2]) - 1;
+            let qNumStr = numMatch[2];
+            let qIndex = -1;
+            if (numberMap[qNumStr]) {
+                qIndex = numberMap[qNumStr] - 1;
+            } else {
+                qIndex = parseInt(qNumStr) - 1;
+            }
+
             if (qIndex >= 0 && qIndex < currentExam.questions.length) {
                 const q = currentExam.questions[qIndex];
                 
@@ -380,10 +392,30 @@ document.addEventListener('DOMContentLoaded', () => {
              ? `Tranqui, de los errores se aprende. Poné "pregunta X" y te explico el por qué paso a paso.`
              : `Recuerda que puedes ver recuadros debajo de cada inciso corregido. Si escribes "pregunta X", puedo darte la explicación directa por aquí.`;
         }
+
+        // Search for terms in the current exam text if not matching standard greetings
+        if (currentExam && currentExam.questions) {
+            const stopWords = ["que", "es", "el", "la", "los", "las", "un", "una", "unos", "unas", "de", "del", "en", "por", "para", "como", "significa", "qué"];
+            let words = lowerQuery.replace(/[¿?.,]/g, '').split(/\s+/);
+            let searchWords = words.filter(w => !stopWords.includes(w) && w.length > 3);
+
+            if (searchWords.length > 0) {
+                for (let i = 0; i < currentExam.questions.length; i++) {
+                    const q = currentExam.questions[i];
+                    for (let w of searchWords) {
+                        if (q.question.toLowerCase().includes(w) || q.explanation.toLowerCase().includes(w)) {
+                            return isGenZMode
+                            ? `¡Ah! Sobre "${w}", me acuerdo que estaba en la Pregunta ${i + 1}. Fijate: ${q.explanation}`
+                            : `El término "${w}" se menciona en la Pregunta ${i + 1}. Te recuerdo la explicación: ${q.explanation}`;
+                        }
+                    }
+                }
+            }
+        }
         
         return isGenZMode
-        ? `Mmm no te estaría entendiendo. Escribí algo como "explicame la pregunta 1" para que pueda ayudarte.`
-        : `Para asistirte mejor sobre este documento, menciónalo específicamente (ej. "Explícame la pregunta 1").`;
+        ? `Mmm no te estaría entendiendo. Escribí algo como "explicame la pregunta 1" o preguntame sobre algún tema del parcial.`
+        : `Para asistirte mejor, menciona una pregunta específica (ej. "Explícame la pregunta 1") o pregúntame por un concepto del examen.`;
     }
 
 });
